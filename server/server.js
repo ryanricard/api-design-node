@@ -23,5 +23,53 @@ var id = 0;
 
 // TODO: make the REST routes to perform CRUD on lions
 
+// get all
+app.get('/lions', function(req, res) {
+  res.json(lions);
+});
+
+// get by id
+app.get('/lions/:id', function(req, res) {
+  var lion = _.find(lions, {id: req.params.id});
+  res.json(lion || {});
+});
+
+// post
+app.post('/lions', function(req, res) {
+  var lion = req.body;
+  lion.id = String(++id);
+  lions.push(lion);
+  res.json(lion);
+});
+
+// put
+app.put('/lions/:id', function(req, res) {
+  var lion;
+  var update = req.body;
+  var lionIndex = _.findIndex(lions, {id: req.params.id});
+
+  if (lionIndex > 0) {
+    res.send();
+  } else {
+    delete update.id;
+    lion = _.assign(lions[lionIndex], update);
+    res.json(lion);
+  }
+});
+
+// delete
+app.delete('/lions/:id', function(req, res) {
+  var lion;
+  var lionIndex = _.findIndex(lions, {id: req.params.id});
+
+  if (lionIndex > 0) {
+    res.send();
+  } else {
+    lion = lions[lionIndex];
+    lions.splice(lionIndex, 1);
+    res.json(lion);
+  }
+});
+
 app.listen(3000);
 console.log('on port 3000');
