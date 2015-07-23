@@ -23,4 +23,11 @@ config.env = process.env.NODE_ENV;
 // the default config if here. We then export that new object for our app to use
 var envConfig;
 
+try {
+  envConfig = require('./' + config.env);
+  envConfig = envConfig || {};
+} catch(err) {
+  // NOOP
+}
+
 module.exports = _.merge(config, envConfig);
